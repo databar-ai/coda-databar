@@ -7,7 +7,7 @@ export const pack = coda.newPack();
  * Coda plugin will only make request to the domain specified here
  * https://coda.io/packs/build/latest/reference/sdk/classes/core.PackDefinitionBuilder/#addnetworkdomain
  */
-pack.addNetworkDomain("https://databar.ai/api/v2");
+pack.addNetworkDomain("databar.ai");
 
 /**
  * Invoke all methods using this authentication
@@ -24,6 +24,7 @@ pack.addDynamicSyncTable({
   description:
     "Dynamic table that displays selected results from table ID specified.",
   listDynamicUrls: async function (context) {
+    console.log("Dynamic URLS called");
     const { body } = await context.fetcher.fetch({
       method: "GET",
       url: "https://databar.ai/api/v2/tables",
@@ -35,6 +36,7 @@ pack.addDynamicSyncTable({
     }));
   },
   getName: async function (context) {
+    console.log("get names called");
     const tableId: string =
       context.sync?.dynamicUrl?.split("/").slice(-1)[0] || "";
     const { body } = await context.fetcher.fetch({
@@ -44,6 +46,7 @@ pack.addDynamicSyncTable({
     return body.name;
   },
   getSchema: async (context) => {
+    console.log("get schema called");
     let { body } = await context.fetcher.fetch({
       method: "GET",
       url: `${context.sync?.dynamicUrl}/rows`,
@@ -66,6 +69,7 @@ pack.addDynamicSyncTable({
     });
   },
   getDisplayUrl: async (context) => {
+    console.log("Get Display url");
     return context.sync?.dynamicUrl || "";
   },
   formula: {
@@ -73,6 +77,7 @@ pack.addDynamicSyncTable({
     description: "Sync your Databar table",
     parameters: [],
     execute: async function ([], context) {
+      console.log("Get Formula Called");
       const { body } = await context.fetcher.fetch({
         method: "GET",
         url: coda.withQueryParams(context.sync.dynamicUrl + "/rows"),
@@ -84,7 +89,7 @@ pack.addDynamicSyncTable({
         return { id, ...data };
       });
       return {
-        result: result.map((data: any) => {
+        result: data.map((data: any) => {
           return {
             ...data,
             itemId: data.id,
