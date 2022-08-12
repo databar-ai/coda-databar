@@ -1,0 +1,28 @@
+{
+  "name": "coda-databar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "pack.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irohitb/coda-databar.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/irohitb/coda-databar/issues"
+  },
+  "homepage": "https://github.com/irohitb/coda-databar#readme",
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@codahq/packs-sdk": "^1.0.5",
+    "axios": "^0.27.2",
+    "lodash": "^4.17.21"
+  }
+}
