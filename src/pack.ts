@@ -44,14 +44,12 @@ pack.addDynamicSyncTable({
   getSchema: async (context) => {
     let { body } = await context.fetcher.fetch({
       method: "GET",
-      url: `${context.sync?.dynamicUrl}/rows`,
+      url: `${context.sync?.dynamicUrl}/columns`,
     });
     const { result } = body;
-    const data = (result || []).map((el: any) => {
-      const { id } = el;
-      const { data } = el;
-      return { id, ...data };
-    });
+    const data = (result || []).map((el: any) => el.name);
+
+    //Note: deriveObjectSchema is probably an overkill here
     const itemSchema = deriveObjectSchema(data, {
       properties: {
         itemId: { type: coda.ValueType.String },
@@ -75,16 +73,35 @@ pack.addDynamicSyncTable({
     description: "Sync your Databar table",
     parameters: [],
     execute: async function ([], context) {
-      const { body } = await context.fetcher.fetch({
+      const { body: rowBody } = await context.fetcher.fetch({
         method: "GET",
         url: coda.withQueryParams(context.sync.dynamicUrl + "/rows"),
       });
-      const { result } = body;
-      const data = (result || []).map((el: any) => {
-        const { id } = el;
-        const { data } = el;
-        return { id, ...data };
+
+      const { body: columnsBody } = await context.fetcher.fetch({
+        method: "GET",
+        url: coda.withQueryParams(context.sync.dynamicUrl + "/columns"),
       });
+
+      const { result: rowResult } = rowBody;
+      const columnsRowMapping = {};
+      columnsBody.forEach((column) => {
+        columnsRowMapping[column.internal_name] = column.name;
+      });
+
+      const data = rowResult.map((row) => {
+        const { id } = row;
+        const { data } = row;
+        const newObj = {};
+        Object.keys(data).forEach((el) => {
+          const elMapping = columnsRowMapping[el];
+          if (elMapping) {
+            newObj[elMapping] = data[el];
+          }
+        });
+        return { id, ...newObj };
+      });
+
       return {
         result: data.map((data: any) => {
           return {
