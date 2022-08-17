@@ -46,10 +46,10 @@ pack.addDynamicSyncTable({
       method: "GET",
       url: `${context.sync?.dynamicUrl}/columns`,
     });
-    const { result } = body;
-    const data = (result || []).map((el: any) => el.name);
+    const data = (body || []).map((el: any) => ({
+      [el.name]: "",
+    }));
 
-    //Note: deriveObjectSchema is probably an overkill here
     const itemSchema = deriveObjectSchema(data, {
       properties: {
         itemId: { type: coda.ValueType.String },
@@ -82,7 +82,6 @@ pack.addDynamicSyncTable({
         method: "GET",
         url: coda.withQueryParams(context.sync.dynamicUrl + "/columns"),
       });
-
       const { result: rowResult } = rowBody;
       const columnsRowMapping = {};
       columnsBody.forEach((column) => {
@@ -101,7 +100,6 @@ pack.addDynamicSyncTable({
         });
         return { id, ...newObj };
       });
-
       return {
         result: data.map((data: any) => {
           return {
