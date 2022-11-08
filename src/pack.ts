@@ -26,12 +26,12 @@ pack.addDynamicSyncTable({
   listDynamicUrls: async function (context) {
     const { body } = await context.fetcher.fetch({
       method: "GET",
-      url: "https://databar.ai/api/v2/tables",
+      url: "https://databar.ai/api/v3/tables",
     });
     const { results } = body;
     return (results || []).map((el: any) => ({
       display: el.name,
-      value: `https://databar.ai/api/v2/tables/${el.id}`,
+      value: `https://databar.ai/api/v3/tables/${el.identifier}`,
     }));
   },
   getName: async function (context) {
