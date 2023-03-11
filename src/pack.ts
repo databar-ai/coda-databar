@@ -30,7 +30,7 @@ pack.addDynamicSyncTable({
     const { results } = body;
     return (results || []).map((el: any) => ({
       display: el.name,
-      value: `https://databar.ai/api/v3/tables/${el.id}`,
+      value: `https://databar.ai/api/v3/tables/${el.identifier}`,
     }));
   },
   getName: async function (context) {
