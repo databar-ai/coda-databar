@@ -1,5 +1,4 @@
-
-### Get Plan details 
+### Get Plan details
 
 ```
 https://databar.ai/api/v2/users/plan-info/
@@ -13,7 +12,7 @@ Add to: Header
 
 ```
 
-Response 
+Response
 
 ```
 {
@@ -25,9 +24,9 @@ Response
 }
 ```
 
-### Get All tables 
+### Get All tables
 
-url: https://databar.ai/api/v2/tables/
+url: https://databar.ai/api/v3/tables/
 
 ```
 {
@@ -68,10 +67,9 @@ url: https://databar.ai/api/v2/tables/
     ]
 ```
 
-### Get Specific Table 
+### Get Specific Table
 
-url: https://databar.ai/api/v2/tables/12021
-
+url: https://databar.ai/api/v3/tables/12021
 
 ```
 {
